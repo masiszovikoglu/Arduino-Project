@@ -1,0 +1,157 @@
+// Set the LCD address to 0x27 for a 16 chars and 2 line display
+int temp;
+int tempPin = 0;
+
+
+
+int trigPin = 6; /* Sensorun trig pini Arduinonun 6 numaralý ayaðýna baðlandý */
+int echoPin = 7;  /* Sensorun echo pini Arduinonun 7 numaralý ayaðýna baðlandý */
+
+long sure;
+long uzaklik;
+int x;
+
+
+int buzzer=3; // Buzzer'in + bacaðýnýn baðlý olduðu arduino pini
+#include <Wire.h>
+#include <LiquidCrystal_I2C.h>
+
+LiquidCrystal_I2C lcd(0x27,16,2);  // set the LCD address to 0x20(Cooperate with 3 short circuit caps) for a 16 chars and 2 line display
+
+void setup(){
+  randomSeed(analogRead(2));
+  lcd.init();                      // initialize the lcd 
+  lcd.backlight();
+  
+  lcd.home();
+  
+  lcd.setCursor(0, 0);
+  lcd.print(uzaklik);
+  lcd.setCursor(0, 1);
+  lcd.print("masis");
+ 
+
+  pinMode(buzzer,OUTPUT); // Buzzer'in baðlý olduðu pini çýkýþ olarak ayarladýk.
+ pinMode(2, INPUT);
+ Serial.begin(9600);
+  pinMode(trigPin, OUTPUT); /* trig pini çýkýþ olarak ayarlandý */
+  pinMode(echoPin,INPUT); /* echo pini giriþ olarak ayarlandý */
+  Serial.begin(9600); 
+
+}
+
+int backlightState = LOW;
+long previousMillis = 0;
+long interval = 100000;
+  
+void loop(){
+  
+  
+  lcd.clear();                      /* asking user to choose a mode*/
+  lcd.setCursor(0,0);
+  lcd.print("Choose mod");
+  lcd.setCursor(0,1);
+  lcd.print("tap touch sensor");
+  delay(2000);
+  lcd.clear();
+  lcd.print(1);
+  lcd.print(" Push ups");
+  delay(1500);
+  if (digitalRead(2)==HIGH){
+  lcd.clear() ; 
+  while(1){
+ 
+ lcd.clear();
+
+  temp = analogRead(0);
+                                       /* Reading value from temperature sensor and converting it to Celcius*/
+   temp = temp *( 0.48828125);
+   lcd.setCursor(5,0);
+   lcd.print("Temp:");
+   lcd.print(temp);
+   lcd.print("*C"); 
+
+   lcd.setCursor(0,1);
+   lcd.print("Count:");
+lcd.print(x);  
+ 
+ if (digitalRead(2) == HIGH){
+ Serial.println("Sensor is touched");
+ digitalWrite(buzzer,HIGH); //Buzzer'a güç göndererek ses çýkarmasýný saðladýk.
+ delay(100);                  // 1 saniye boyunca çalmasýný söyledik.
+ digitalWrite(buzzer,LOW);} //Buzzerýn gücünü keserek susmasýný saðladýk saðladýk.
+
+digitalWrite(trigPin, LOW); /* sensör pasif hale getirildi */
+  delayMicroseconds(5);
+  digitalWrite(trigPin, HIGH); /* Sensore ses dalgasýnýn üretmesi için emir verildi */
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);  /* Yeni dalgalarýn üretilmemesi için trig pini LOW konumuna getirildi */ 
+  sure = pulseIn(echoPin, HIGH); /* ses dalgasýnýn geri dönmesi için geçen sure ölçülüyor */
+  uzaklik= sure /29.1/2; /* ölçülen sure uzaklýða çevriliyor */            
+  
+  lcd.setCursor(0,0); 
+  lcd.print(uzaklik); 
+  Serial.print("Uzaklik ");  
+  Serial.print(uzaklik); /* hesaplanan uzaklýk bilgisayara aktarýlýyor */
+  Serial.println(" CM olarak olculmustur.");  
+  delay(20); 
+  if (uzaklik <15)
+  delay(1000);
+  if (uzaklik<15){
+  digitalWrite(buzzer,HIGH); //Buzzer'a güç göndererek ses çýkarmasýný saðladýk.
+  x++;
+ delay(100);
+ // 1 saniye boyunca çalmasýný söyledik.
+ digitalWrite(buzzer,LOW);}
+
+ digitalWrite(8,HIGH);
+ delay(100);
+ delay(1000);
+
+ 
+
+}
+  }
+
+
+lcd.clear();
+lcd.print(2);
+lcd.print(" Reaction Time");
+lcd.setCursor(0,1);
+
+delay(1500);
+if (digitalRead(2)==HIGH){              /* Mode 2 is selected */
+  lcd.clear();
+  lcd.setCursor(0,0);
+  lcd.print("Tap the sensor");
+  lcd.setCursor(0,1);
+  lcd.print("after the sound ");
+  delay(5000);
+  lcd.clear();
+  delay(2000);
+  while(1){
+  delay(random(200,2000));
+   unsigned long time=millis();
+  digitalWrite(buzzer,HIGH);
+  digitalWrite(8,HIGH);
+ delay(100);
+ digitalWrite(buzzer,LOW);
+while(1){
+ if (digitalRead(2)== HIGH){
+  lcd.clear();
+  lcd.setCursor(0,0);
+  lcd.print(millis()-time-100);
+  
+  lcd.print(" milliseconds");
+  delay(2000);
+  lcd.clear();
+  break;
+ }
+}
+digitalWrite(8,LOW);
+ delay(10000);
+}
+}
+   
+   // convert the analog volt to its temperature equivalent
+}
