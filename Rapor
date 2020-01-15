@@ -1,0 +1,42 @@
+Projenin Adı:
+ Push up sayacı ve refleks ölçer
+ 
+Projenin Amacı:
+ Arduinu kullanaraka mobil uygualamalardakine benzer bir push up sayacı yapmmak.
+
+Giriş:
+ Bilindiği üzere spor egzersizlerinin faydalı olması için düzgün yapılması önemlidir. Bu açıdan daha önce mobil uygulamalarda veya ayrı bir cihaz olarak gördüüğüm push up sayacını Arduino kullnarak kendim de yapabaileciğimi fark ettim. Daha sonra biraz daha özellik eklemek için projeyi refleks süremizi de ölçer hale getirmeye karar verdim.
+
+Yöntem:
+ Projede kullandığım malzemeeler:
+ -Arduino uno
+ -Breadbor
+ -Jumper kablolar
+ -Ultrasonik mesafe sensörü
+ -Dokunmatik sensör
+ -LCD I2C ekran
+ -Buzzer
+ -Led
+ -Sıcaklık sensörü
+ Mesafe sensörü kullanıcının yere yeterince yaklaştığını ve bir süre orda kaldığını teyit eder. Koşul sağlanırsa Buzzer sinyal verir, yeşil bir led yanar ve ekranda gözüken sayı bir artar. Böylelikle hem hareketin doğru yapıldığı kontrol edilir hem de harekete dair kayıt sayısal veri elde ediliir. 
+ Reflleks ölçümü ise şu şekilde gerçekleşir. Rastgele aralıklarla buzzer sinyal verir, kullanıcının dokunmatik sensöre dounması beklenir,aradan geçen süre LCD ekrana yazdırılır. Burada sensörün de belli bir yanıt süresinin olduğu göz önünde bulundurularak ekrana yazdırılacak zamanın hesaplanmasında gerekli dönüşüm yapıldı.
+ Bu iki mod arasında seçim yapmak için de yine douknmatik sensör kullanılır. Buna ilaveten ortamın sıcaklık bilgisi de ekranda gözükür. Ölçülen değerin Celciusa dönüştürülmesi için gereken katsayıyı deneysel olarak buldum.
+
+Bulgular:
+
+ Projeyi son haline getirip denediğimde, sayacın doğru çalıştığını gördüm. Refleks ölçümü sonucu çıkan değerler ise bir insan için öngörülen ortalama refleks süreleriyle uyuşmaktaydı. Sıcaklık sensörü ise gerçek bir termometreyle öçltüğüm sıcaklık değeriyle  +-1 Celciusluk sapmaya sahipti.
+ 
+Sonuç:
+ Amaçladığım sonuca proje sonunda ulaştım. Arduino ve sensörlerini kullanarak gündelik hayatatan ihtiyaçlara cevap verebileceğimi deneyimlemiş oldum ettim. 
+ 
+ 
+Kaynaklar:
+ Çeşitli forumlar, sensörlerin data sheetleri.
+ 
+ 
+ 
+
+ 
+
+
+
